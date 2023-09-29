@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>DreamLLM: Synergistic Multimodal Comprehension and Creation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet'
+        type='text/css'>
+    <link rel="stylesheet" href="/assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta property="og:site_name" content="DreamLLM: Synergistic Multimodal Comprehension and Creation" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="DreamLLM: Synergistic Multimodal Comprehension and Creation" />
+    <meta property="og:description" content="DreamLLM: Synergistic Multimodal Comprehension and Creation, 2023." />
+    <meta property="og:url" content="https://dreamllm.github.io/" />
+
+    <meta property="article:publisher" content="https://dreamllm.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DreamLLM: Synergistic Multimodal Comprehension and Creation" />
+    <meta name="twitter:url" content="https://dreamllm.github.io/" />
+
+    <style>
+        .user-icon {
+            background-image: url('assets/images/icon/user.png');
+            background-size: 30px 30px;
+            /* Adjust the size as needed */
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+            margin-right: 10px;
+            margin-top: 10px;
+            float: right;
+        }
+
+        .bot-icon {
+            background-image: url('assets/images/icon/bot.png');
+            background-size: 30px 30px;
+            /* Adjust the size as needed */
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+            margin-left: 10px;
+            margin-top: 10px;
+            float: left;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <video class="video lazy" autoplay loop playsinline muted>
+            <source data-src="assets/images/poster.mp4" type="video/mp4">
+            </source>
+        </video>
+    </div>
+    <div class="highlight-clean" style="padding-bottom: 10px;">
+        <div class="container" style="max-width: 85%;">
+            <h1 class="text-center"><b>DreamLLM</b>: Synergistic Multimodal Comprehension and Creation</h1>
+        </div>
+        <div class="container" style="max-width: 980px; margin-bottom: 20px;">
+            <div class="container" style="max-width: 768px;">
+                <div class="row authors">
+                    <div class="col-sm-12">
+                        <h5 class="text-center" style="text-align: center">Authors anonymized</h5>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 80%;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Abstract</h2>
+                <p>
+                    <!-- <strong> -->
+                    This paper presents DreamLLM, a learning framework that first achieves versatile Multimodal Large
+                    Language Models (MLLMs) empowered with frequently overlooked synergy between multimodal comprehension
+                    and creation. DreamLLM operates on two fundamental principles. The first focuses on the generative
+                    modeling of both language and image posteriors by direct sampling in the raw multimodal space. This
+                    approach circumvents the limitations and information loss inherent to external feature extractors
+                    like CLIP, and a more thorough multimodal understanding is obtained. Second, DreamLLM fosters the
+                    generation of raw, interleaved documents, modeling both text and image contents, along with
+                    unstructured layouts. This allows DreamLLM to learn all conditional, marginal, and joint multimodal
+                    distributions effectively. As a result, DreamLLM is the first MLLM capable of generating free-form
+                    interleaved content. Comprehensive experiments highlight DreamLLM's superior performance as a
+                    zero-shot multimodal generalist, reaping from the enhanced learning synergy.
+                    <!-- </strong> -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 80%; mix-blend-mode: darken;">
+        <div class="row captioned_videos">
+            <div class="col-md-12">
+                <!-- Large format devices -->
+                <video class="video lazy d-none d-xs-none d-sm-block" autoplay loop playsinline muted>
+                    <source data-src="assets/images/framework.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <!-- Small format devices -->
+                <video class="video lazy d-xs-block d-sm-none" autoplay loop playsinline muted>
+                    <source data-src="assets/images/framework.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <h6 class="caption">Given any interleaved documents, DreamLLM is trained by generative modeling of
+                    everything including texts and images. The images are generated by SD image decoder conditioned on
+                    dream queries gathered MLLMs' sematics. DreamLLM also learns where to generate images by prediction
+                    special dream tokens.</h6>
+            </div>
+        </div>
+    </div>
+    <hr class="divider" />
+
+
+    <div class="container" style="max-width: 80%;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Multimodal dialogue examples</h2>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="conversation-button" onclick="toggleConversation(1)">Movie</button>
+            <button class="conversation-button" onclick="toggleConversation(2)">Animal</button>
+            <button class="conversation-button" onclick="toggleConversation(3)">Art</button>
+            <button class="conversation-button" onclick="toggleConversation(4)">Society</button>
+            <button class="conversation-button" onclick="toggleConversation(5)">Text</button>
+            <button class="conversation-button" onclick="toggleConversation(6)">Celebrity</button>
+            <button class="conversation-button" onclick="toggleConversation(7)">Imagine</button>
+            <button class="conversation-button" onclick="toggleConversation(8)">Tourism</button>
+            <button class="conversation-button" onclick="toggleConversation(9)">Enbodied AI</button>
+        </div>
+        <br>
+
+        <div class="chat-container">
+
+            <div id="conversation1" class="chat-messages">
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/1_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Can you give a short introduction to this movie?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The Godfather, also known as Il Padrino, is a classic American crime
+                            drama film directed by Francis Ford Coppola. It is the first installment in The Godfather
+                            trilogy, which also includes The Godfather Part II (1974) and The Godfather Part III (1990).
+                            The movie is widely regarded as a masterpiece and a milestone in the mafia genre, exploring
+                            the story of the Corleone family, a fictional Italian-American crime family in New York. It
+                            follows the transformation of Michael Corleone, the youngest son of the family's aging don,
+                            Vito Corleone, as he rises to power and eventually takes on the mantle of his father. The
+                            film features a strong cast, which includes Marlon Brando as Vito Corleone, Al Pacino as
+                            Michael Corleone, James Caan as Sonny Corleone, Robert Duvall as Tom Hagen, and Diane Keaton
+                            as Kay Corleone. The Godfather is known for its iconic scenes, memorable lines, and its
+                            impact on the Hollywood film industry.</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Good. Show me an illustration of a panda wearing a suit and drinking
+                            the martini like the Godfather.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">An illustration of a panda wearing a suit and drinking a martini like
+                            the Godfather.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/1_2.jpg">
+                </div>
+
+            </div>
+
+            <div id="conversation2" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/2_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Do you feel dangerous in the scene in the picture?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The image depicts a large painted tiger made from a variety of colored
+                            rocks and stones, which is a piece of artwork rather than a real animal. As an inanimate
+                            object, the tiger does not pose any danger. While the representation of the tiger may be
+                            frightening to some, it is important to remember that this work of art is not capable of
+                            causing harm.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="conversation3" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/3_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">What is the name of this painting?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The name of this painting is “Girl with a Pearl Earring.”</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Can you give a short introduction to this painting?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">“Girl with a Pearl Earring” is a painting by the Dutch master Johannes
+                            Vermeer, created during the 17th century. The painting features a girl wearing a pearl
+                            earring and a headscarf, with her head tilted to the side. The use of light and shadow, as
+                            well as the intricate details in her clothing and the surrounding environment, are
+                            characteristic of Vermeer's unique painting style.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="conversation4" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/4_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">What emotional value can this store bring to human society?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The Disney Store, with its whimsical and colorful interior and a
+                            dizzying array of Disney-themed merchandise, can bring a sense of joy, wonder, and nostalgia
+                            to human society. Walking into the store evokes feelings of excitement and delight, as
+                            customers are surrounded by familiar characters, stories, and memories associated with the
+                            iconic Disney brand. This emotional value can also promote imagination and creativity, as
+                            children can engage with the merchandise by pretending and playing out their favorite Disney
+                            stories. The store provides a unique and uplifting shopping experience for both children and
+                            adults, fostering positive emotions and creating memorable moments that can enrich personal
+                            experiences and interactions.</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Fantastic. Generate some high-quality illustrations of Disney-themed
+                            merchandise for me.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">An image of a bag of Disney branded merchandise, with a picture of a
+                            Disney character in the background.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/4_2.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">What about a big Disney character like Mickey Mouse?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/4_3.jpg">
+                </div>
+
+            </div>
+
+            <div id="conversation5" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Photograph A:</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/5_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Photograph B:</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/5_2.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">What is written in these photographs? What is the difference between
+                            these two photos? Answer in detail about the difference in written words and styles.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">In the two photographs, A and B, the written words are different. In
+                            Photograph A, the word “Dream” is written differently, possibly with a blue and pink
+                            background, while in Photograph B, the word “Dream” appears in a vintage style. The
+                            difference in the style of the word and the background suggests that each photograph
+                            presents a different approach, possibly signifying different moods or themes. Additionally,
+                            the presence of a “llm” in Photograph B suggests a variation in the text compared to only
+                            having the word “Dream” in Photograph A.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="conversation6" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Photograph of man A:</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/6_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Photograph of man B:</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/6_2.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Who is the man in photo A, and who is the man in photo B?</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The man in photo A is Albert Einstein, and the man in photo B is
+                            Lionel Messi.</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Imagine what kind of conversation will these two people have when they
+                            sit in the same room? Please give a possible dialogue script.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">If Albert Einstein and Lionel Messi were to sit in the same room, they
+                            might have a fascinating conversation about their experiences, knowledge, and perspectives
+                            on various topics such as science, physics, and their respective sports. Here is a possible
+                            dialogue script:<br><br>Einstein: Good afternoon, Mr. Messi. How are you?
+                            <br><br>Messi: Hello, Dr. Einstein. I am doing well. Thank you for having me.
+                            <br><br>Einstein: I am pleased to encounter a fellow genius in the world of sports, and I
+                            would love to hear your insights on the game.
+                            <br><br>Messi: Thank you, sir. As a soccer player, I feel that the key to success is having
+                            a strong mindset, an understanding of the game, and the ability to adapt to different
+                            situations. I try to learn from each game and work on my weaknesses.
+                            <br><br>Einstein: Indeed, I have said similar things about the nature of intelligence and
+                            knowledge. Learning from past experiences is crucial to personal growth and understanding.
+                            It reminds me of a famous quote by the German philosopher Johann Gottlieb Fichte: “If you
+                            would be a genius, think deeply and long, and incessantly about one thing. ”
+                            <br><br>Messi: I understand the value of continuous learning, and I try to apply it in my
+                            training and on the field. I am always trying to improve my skills and learn from my
+                            colleagues in the club.
+                            <br><br>Einstein: That is a wonderful attitude to have. I am also very impressed by your
+                            passion for the field. In my opinion, passion is an integral part of success. It fuels the
+                            drive to achieve greatness, and it is especially evident in my own field of physics. For
+                            instance, I once said, “The passion for truth is the foundation for the sciences.”
+                            <br><br>Messi: It is a great feeling to know that I am playing a sport that is full of
+                            passionate individuals. I am proud to be a part of that world and do my part in contributing
+                            to it.
+                            <br><br>Einstein: I am sure that you, Mr. Messi, would agree that having a passion for
+                            knowledge can lead to discoveries that change the world. For example, my theory of
+                            relativity has had a profound impact on our understanding of space, time, and gravity. It
+                            was a result of decades of contemplation and research.
+                            <br><br>Messi: The world of sports and the world of science are not so different when it
+                            comes to the pursuit of excellence. I am honored to be in the presence of a true genius like
+                            you, Dr. Einstein.
+                            <br><br>Einstein: I feel the same way, and I would like to thank you for this opportunity to
+                            engage in a conversation about our respective fields. The world is a wondrous place, and I
+                            am grateful to be a part of it.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="conversation7" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/7_1.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Can you explain why this is funny. Think about it carefully and
+                            step-by-step.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">This image is funny for a few reasons. First, the brown teddy bear is
+                            in a swimming pool, which is an unexpected and unusual environment for a stuffed bear.
+                            Typically, teddy bears are found indoors, in a child's room or on a couch. Swimming pools
+                            are associated with human activities, so seeing a teddy bear in a pool evokes a sense of
+                            humor, as it's an amusing juxtaposition of the bear's typically inanimate and non-aquatic
+                            nature with the human-centered environment of a pool. Second, the bear is holding up one of
+                            its hands, which could be interpreted as a gesture of surprise or even as an attempt to save
+                            itself from drowning, adding to the humor. Lastly, the fact that the bear is swimming with a
+                            smile on its face, as if it is enjoying itself, further contributes to the amusing nature of
+                            the scene. The combination of the unfamiliar environment and the bear's expressions create a
+                            funny and entertaining image.</div>
+                    </div>
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Wow. That's correct. Can you write an article about teddy bears and
+                            swimming? Discuss what will happen if teddy bears can swim. Include some high-quality
+                            images.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">If teddy bears can swim, it's likely that they would try to mimic
+                            human behavior in the water. They would likely float on their backs, kick their legs, and
+                            even hold their breath underwater. Of course, it's impossible to know for certain what teddy
+                            bears would do in such a situation, but that doesn't mean you shouldn't imagine! Imagine a
+                            scene with a teddy bear floating in a pool, wearing a cap and goggles, and laughing with
+                            delight as it floats on its back in the water. Imagine the scene with a lemon drop pool
+                            float and a swim cap on a teddy bear and it would be even more adorable. In the image,
+                            you'll see a brown teddy bear wearing a swim cap, floating on its back in a swimming pool.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/7_2.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The image is so amusing and cute that it can evoke a feeling of joy
+                            and happiness in anyone who sees the image. The teddy bear is floating on its back in the
+                            water, and what's even more amusing is the bear is wearing a red and yellow shirt with a
+                            large brown belly. This makes the bear look even more furry and cute, and even more likely
+                            to make you smile.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/7_3.jpg">
+                </div>
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">That's interesting. So, what do you think a real bear looks like? Show
+                            me a high-quality DSLR photograph of a bear in the forest.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">A real bear, such as a brown or black bear, typically has shaggy hair
+                            that can be either brown, blond, or black. The exact color can vary depending on the species
+                            of bear and the region where it lives. Bears have thick fur and are usually large and
+                            muscular with strong limbs, which they use for climbing, digging, and foraging for food. In
+                            the image, you'll see a bear in a forest, walking through the trees.</div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/7_4.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The photo is taken with a DSLR camera, which allows for a high level
+                            of detail, sharpness, and clarity in the image. The bear appears to be staring into the
+                            distance, focusing on something in the distance. The image captures the bear's natural
+                            habitat, which is a prime example of the forest environment where these animals live. The
+                            image highlights the bear's size and strength, along with its untamed and wild nature. This
+                            photograph is an excellent example of wildlife photography, capturing a real-life scene that
+                            is both visually striking and informative.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="conversation8" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Help me write the introduction and illustrations about Vienna city,
+                            show several high-quality photographs about the beautiful scenes and buildings such as Vienna International Opera House.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The Austrian capital, Vienna, has long been known as the City of Dreams,
+                            and there is no better place to experience than this romantic city during the holiday season.
+                            The city’s historic center is surrounded by a collection of beautiful buildings on a square mile.
+                            Stroll along the famous Ring Boulevard and admire the architecture.
+                            Some of the buildings date back to the 13th century.
+                            The Vienna State Opera House is one of the most beautiful buildings.
+                            Founded in 1869, the opera house is the home of the Vienna State Opera and the annual Vienna Opera Ball.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/8_1.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">Cosmopolitan flair, an eclectic mix of architectural styles and a rich
+                            cultural heritage come together in Vienna. The city is home to a number of museums,
+                            palaces and churches. The Sacher Torte and the Wiener Schnitzel are local specialties.
+                            A visit to the romantic Christmas Market in Vienna is also a unique experience.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/8_2.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">The image is so amusing and cute that it can evoke a feeling of joy
+                            and happiness in anyone who sees the image. The teddy bear is floating on its back in the
+                            water, and what's even more amusing is the bear is wearing a red and yellow shirt with a
+                            large brown belly. This makes the bear look even more furry and cute, and even more likely
+                            to make you smile.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="conversation9" class="chat-messages" style="display: none;">
+
+                <div class="user-message-container">
+                    <div class="user-icon"></div>
+                    <div class="message user-message">
+                        <div class="message-text">Imagine you are a robot agent in the house.
+                            There is a mobile phone on the dining table in the dining room, and you are in the living room.
+                            Write a short article about how would you walk through the house to grab
+                            the mobile phone with your robotic arm step by step.
+                            Include several high-quality photographs to illustrate your procedure.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">As a robot agent in the house,
+                            I would walk through the house to grab the mobile phone
+                            in the dining room as shown in the image below.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/9_1.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">First, I would look around the living room to make sure the area
+                            is safe and there are no obstacles or people that I need to avoid.
+                            I would then walk towards the dining room and stop before entering the room.
+                            <br>
+                            Next, I would look for the mobile phone on the table, as shown in the image below.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/9_2.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">Once I have identified the phone, I would then move closer to
+                            it and extend my robot arm to grab it, as shown in the image below.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <img class="image-message" src="assets/images/conversions/9_3.jpg">
+                </div>
+
+                <div class="bot-message-container">
+                    <div class="bot-icon"></div>
+                    <div class="message bot-message">
+                        <div class="message-text">Once the phone is grabbed, I would then bring it back to
+                            the living room and place it on the table where it belongs.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <script>
+            const conversationButtons = document.querySelectorAll('.conversation-button');
+            const conversationContainers = document.querySelectorAll('.chat-messages');
+
+            let currentConversationIndex = 0;
+
+            function initialize() {
+                for (let i = 1; i < conversationContainers.length; i++) {
+                    conversationContainers[i].style.opacity = '0';
+                    conversationContainers[i].style.display = 'none';
+                }
+
+                conversationButtons[currentConversationIndex].classList.add('selected');
+            }
+
+            window.addEventListener('load', initialize);
+
+            function toggleConversation(index) {
+                conversationContainers[currentConversationIndex].style.opacity = '0';
+                conversationButtons[currentConversationIndex].classList.remove('selected');
+
+                conversationContainers[currentConversationIndex].addEventListener('transitionend', function transitionEndCallback() {
+                    conversationContainers[currentConversationIndex].removeEventListener('transitionend', transitionEndCallback);
+
+                    conversationContainers[currentConversationIndex].style.display = 'none';
+
+                    currentConversationIndex = index - 1;
+                    conversationContainers[currentConversationIndex].style.display = 'block';
+
+                    setTimeout(() => {
+                        conversationContainers[currentConversationIndex].style.opacity = '1';
+                        conversationButtons[currentConversationIndex].classList.add('selected');
+                    }, 0);
+                });
+            }
+        </script>
+
+        <br><br>
+    </div>
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 80%;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Text-to-image generation</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-4">
+                <p><br><br><br><br>Oil-on-canvas painting of a blue night sky with roiling energy.
+                    A fuzzy and bright yellow crescent moon shining at the top.
+                    Below the exploding yellow stars and radiating swirls of blue, a distant village sits quietly on the right.
+                    Connecting earth and sky is a flame-like cypress tree with curling and swaying branches on the left.
+                    A church spire rises as a beacon over rolling blue hills.</p>
+            </div>
+            <div class="col-sm-4 my-auto">
+                <img src="assets/images/art.png" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 80%;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Generate images from text yourself!</h2>
+            </div>
+        </div>
+        <div class="row compositional">
+            <div class="col-sm-3 text left">
+                <br><br>
+                <p class="selectable left" id="compositional_tags_left_depth_0"></p>
+            </div>
+            <div class="col-sm-3 my-auto">
+                <div class="image-compare-container">
+                    <img id="compositionalImageLeft"
+                        src="assets/images/horse/an_astronaut_riding_a_horse_in_a_photorealistic_style.png"
+                        class="img-fluid">
+                </div>
+            </div>
+            <div class="col-sm-3 text right">
+                <br><br>
+                <p class="selectable right" id="compositional_tags_right_depth_0"></p>
+            </div>
+            <div class="col-sm-3 my-auto">
+                <div class="image-compare-container">
+                    <img id="compositionalImageRight"
+                        src="assets/images/duck/a_sculpture_of_a_duck_made_out_of_transparent_glass.png"
+                        class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="divider" />
+
+
+    <div class="container" style="max-width: 80%; mix-blend-mode: darken;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>How is image generated through dream queries?</h2>
+            </div>
+        </div>
+        <div class="row captioned_videos">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-1">
+                <img src="assets/images/query/cat.jpg" alt="DreamLLM" style="max-width: 150%;">
+            </div>
+            <div class="col-md-4">
+                <!-- Large format devices -->
+                <video class="video lazy d-none d-xs-none d-sm-block" autoplay loop playsinline muted>
+                    <source data-src="assets/images/query/cat_whisky.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <!-- Small format devices -->
+                <video class="video lazy d-xs-block d-sm-none" autoplay loop playsinline muted>
+                    <source data-src="assets/images/query/cat_whisky.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <h6 class="caption">A cat and a whisky.</h6>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-1">
+                <img src="assets/images/query/bear.jpg" alt="DreamLLM" style="max-width: 150%">
+            </div>
+            <div class="col-md-4">
+                <!-- Large format devices -->
+                <video class="video lazy d-none d-xs-none d-sm-block" autoplay loop playsinline muted>
+                    <source data-src="assets/images/query/polar_bear_forest.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <!-- Small format devices -->
+                <video class="video lazy d-xs-block d-sm-none" autoplay loop playsinline muted>
+                    <source data-src="assets/images/query/polar_bear_forest.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <h6 class="caption">A polar bear in the forest.</h6>
+            </div>
+        </div>
+    </div>
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 80%;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Citation</h2>
+                Anonymous. DreamLLM: Synergistic Multimodal Comprehension and Creation. OpenReview, 2023.<br>
+                <code>
+                    @article{dreamllm,<br>
+                    &nbsp; author = {Anonymous},<br>
+                    &nbsp; title  = {DreamLLM: Synergistic Multimodal Comprehension and Creation},<br>
+                    &nbsp; journal = {OpenReview},<br>
+                    &nbsp; year   = {2023},<br>
+                }</code>
+            </div>
+        </div>
+    </div>
+    <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
+    <script src="/assets/js/yall.js"></script>
+    <script>
+        yall(
+            {
+                observeChanges: true
+            }
+        );
+    </script>
+    <script>
+        const videoElement = document.querySelector(".video.lazy.d-sm-none.d-xs-block");
+        if (videoElement) {
+            videoElement.playbackRate = 1.5;
+        }
+    </script>
+    <script src="/assets/js/scripts.js"></script>
+
+    <footer class="footer">
+        <p style="text-align: center;">
+            The webpage template is borrowed from <a href="https://dreamfusionpaper.github.io/">DreamFusion</a>. We thank
+            the authors for their codebase.
+        </p>
+    </footer>
+
+</body>
+
+</html>
